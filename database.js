@@ -214,26 +214,71 @@ function submitperscription(){
 
 function addsales(){
   view.removeChild(view.firstChild);
-  var salesform = document.createElement("div");
-  salesform.className = 'form-group';
+  window.salesform = document.createElement("div");
+  salesform.className = 'col-3 form-group';
 
-  var 
+  window.pharmacistIDsales = document.createElement("input");
+  pharmacistIDsales.className ='form-control';
+  pharmacistIDsales.type = 'number';
+  pharmacistIDsales.placeholder = "Pharmacist ID"
 
-  if(incustomers())
-  var xhttp;
-  xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function(){
-    console.log(this.status);
-    if(this.readyState == 4 && this.status ==200){
-      console.log(this.response);
-    }
-  };
-  xhttp.open("POST", "addperscription.php", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send();
+  window.customerIDsales = document.createElement("input");
+  customerIDsales.className ='form-control';
+  customerIDsales.type = 'number';
+  customerIDsales.placeholder = "Customer ID"
+
+  window.drugIDsales = document.createElement("input");
+  drugIDsales.className ='form-control';
+  drugIDsales.type = 'number';
+  drugIDsales.placeholder = "Drug ID"
+
+  window.amount = document.createElement("input");
+  amount.className ='form-control';
+  amount.type = 'number';
+  amount.placeholder = "Amount Purchased";
+
+  var submitbtnsales = document.createElement("button");
+  submitbtnsales.type = 'button'; 
+  submitbtnsales.setAttribute("onclick","submitsale()");
+   submitbtnsales.className = "btn btn-success";
+salesform.appendChild(pharmacistIDsales);
+salesform.appendChild(customerIDsales);
+salesform.appendChild(drugIDsales);
+salesform.appendChild(amount);
+salesform.appendChild(submitbtnsales);
+view.appendChild(salesform);
+
+ 
 };
 
+function submitsale(){
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+' '+time;
 
+  var xhttp; 
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    console.log(this.status);
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.response);
+
+
+      }
+      //var res = JSON.parse(this.response);
+    
+  };
+  xhttp.open("POST", `addsale.php`, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send(`customerID=${window.customerIDsales.value}
+              &pharmacistID=${window.pharmacistIDsales.value}
+              &drugID=${window.drugIDsales.value}
+              &amount=${window.amount.value}
+              &datetime= ${dateTime}`);
+
+
+}
 
 function totalsold(){
   view.removeChild(view.firstChild);
